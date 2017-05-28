@@ -257,6 +257,30 @@ def print_all_star_planets(star):
 		print_nth_planet_of_star(star)
 
 
+def find_planet_with_prefix(galaxy, prefix):
+	addr = from_ship_name(prefix) * 65536
+	for i in range(1, 65536):
+		current = addr + i
+		unscrambled = fend(current)
+		if (unscrambled & 0xff) == galaxy:
+			star = unscrambled & 0xffff
+			star_name = to_star_name(star)
+			planet = to_planet_name(current)
+			print("0x%04x %s: %s" % (star, star_name, planet))
+
+
+def find_planet_with_suffix(galaxy, suffix):
+	addr = from_ship_name(suffix)
+	for i in range(1, 65536):
+		current = addr + (i * 65536)
+		unscrambled = fend(current)
+		if (unscrambled & 0xff) == galaxy:
+			star = unscrambled & 0xffff
+			star_name = to_star_name(star)
+			planet = to_planet_name(current)
+			print("0x%04x %s: %s" % (star, star_name, planet))
+
+
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	args = parser.parse_args()
