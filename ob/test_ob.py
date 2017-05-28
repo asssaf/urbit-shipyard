@@ -39,3 +39,9 @@ class MyTest(unittest.TestCase):
 
     def test_to_planet_name(self):
         self.assertEquals(ob.to_planet_name(0x10100), "doznec-marzod")
+
+    def test_from_ship_name(self):
+        self.assertEquals(ob.from_ship_name('mar'), 1)
+        self.assertEquals(ob.from_ship_name('marzod'), 0x100)
+        self.assertEquals(ob.from_ship_name('doznec-marzod', unscramble=False), 0x10100)
+        self.assertEquals(ob.from_ship_name('wicdev-wisryt'), 0x10100)

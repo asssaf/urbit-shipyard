@@ -217,6 +217,26 @@ def to_ship_name(addr, min_bytes):
 	return name
 
 
+def from_ship_name(name, unscramble=True):
+	if len(name) == 3:
+		return prefix.index(name) / 3
+
+	elif len(name) == 6:
+		addr = prefix.index(name[:3]) / 3
+		addr *= 256
+		addr += suffix.index(name[3:]) / 3
+		return addr
+
+	else:
+		addr = from_ship_name(name[:6])
+		addr *= 65536
+		addr += from_ship_name(name[7:])
+		if unscramble:
+			addr = fend(addr)
+
+		return addr
+
+
 def nth_planet_of_star(star, n):
 	return n * 65536 + star
 
