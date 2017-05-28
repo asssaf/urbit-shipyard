@@ -49,6 +49,7 @@ def get_prefix(i):
 def get_suffix(i):
 	return get_syllable(suffix, i)
 
+
 def feen(pyn):
 	if pyn >= 0x10000 and pyn <= 0xffffffff:
 		return 0x10000 + fice(pyn - 0x10000)
@@ -61,15 +62,37 @@ def feen(pyn):
 	return pyn
 
 
+def fend(cry):
+	if cry >= 0x10000 and cry < 0xffffffff:
+		return 0x10000 + teil(cry - 0x10000)
+
+	if cry >= 0x100000000 and cry <= 0xffffffffffffffff:
+		lo = cry & 0xffffffff
+		hi = cry & 0xffffffff00000000
+		return (hi | fend(lo))
+
+	return cry
+
+
 def fice(nor):
 	sel = [ nor % 65535, nor / 65535 ]
-	sel = rynd(0, sel[0], sel[1])
-	sel = rynd(1, sel[0], sel[1])
-	sel = rynd(2, sel[0], sel[1])
-	sel = rynd(3, sel[0], sel[1])
+	for i in xrange(0, 4):
+		sel = rynd(i, sel[0], sel[1])
+
 	res = 65535*sel[0] + sel[1]
 
 	logging.debug("fice(%x)=%x" % (nor, res))
+	return res
+
+
+def teil(vip):
+	sel = [ vip % 65535, vip / 65535 ]
+	for i in xrange(3, -1, -1):
+		sel = rund(i, sel[0], sel[1])
+
+	res = 65535*sel[0] + sel[1]
+
+	logging.debug("teil(%x)=%x" % (vip, res))
 	return res
 
 
@@ -85,6 +108,22 @@ def rynd(n, l, r):
 	res[1] = (l + muk(raku[n], 2, r)) % m
 
 	logging.debug("rynd(%d, %x, %x)=[%x, %x]" % (n, l, r, res[0], res[1]))
+	return res
+
+
+def rund(n, l, r):
+	res = [0, 0]
+	res[0] = r
+
+	if (n % 2) == 0:
+		m = 65535
+	else:
+		m = 65536
+
+	h = muk(raku[n], 2, r)
+	res[1] = (m + l - (h%m)) % m
+
+	logging.debug("rund(%d, %x, %x)=[%x, %x]" % (n, l, r, res[0], res[1]))
 	return res
 
 

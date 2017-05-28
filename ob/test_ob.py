@@ -6,6 +6,9 @@ class MyTest(unittest.TestCase):
     def test_feen(self):
         self.assertEqual(ob.feen(0x10100), 0x63b30e1c)
 
+    def test_fend(self):
+        self.assertEquals(ob.fend(0x63b30e1c), 0x10100)
+
     """
     > `@ux`(muk 0x0 32 0x1)
     0x734e.58c3
