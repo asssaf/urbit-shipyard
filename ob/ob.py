@@ -185,11 +185,24 @@ def murmur3_x86_32(data, seed = 0):
     return h1 & 0xffffffff
 
 
+def to_galaxy_name(galaxy):
+	return to_ship_name(galaxy, 1)
+
+
+def to_star_name(star):
+	return to_ship_name(star, 2)
+
+
 def to_planet_name(scrambled):
 	name = ""
 	s = scrambled
-	for i in xrange(0, 4):
-		byte = s % 256
+	return to_ship_name(s, 4)
+
+
+def to_ship_name(addr, min_bytes):
+	name = ""
+	for i in xrange(0, min_bytes):
+		byte = addr % 256
 		if i % 2 == 1:
 			syllable = get_prefix(byte)
 		else:
@@ -199,7 +212,7 @@ def to_planet_name(scrambled):
 			name = "-" + name
 
 		name = syllable + name
-		s = s / 256
+		addr = addr / 256
 
 	return name
 

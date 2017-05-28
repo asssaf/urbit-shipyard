@@ -31,5 +31,11 @@ class MyTest(unittest.TestCase):
         self.assertEquals(ob.get_prefix(1), "mar")
         self.assertEquals(ob.get_suffix(1), "nec")
 
+    def test_to_galaxy_name(self):
+        self.assertEquals(ob.to_galaxy_name(0), "zod")
+
+    def test_to_star_name(self):
+        self.assertEquals(ob.to_star_name(0x100), "marzod")
+
     def test_to_planet_name(self):
         self.assertEquals(ob.to_planet_name(0x10100), "doznec-marzod")
