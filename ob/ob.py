@@ -193,13 +193,27 @@ def to_star_name(star):
 	return to_ship_name(star, 2)
 
 
-def to_planet_name(scrambled):
+def to_planet_name(scrambled, scramble=True):
 	name = ""
 	s = scrambled
-	return to_ship_name(s, 4)
+	return to_ship_name(s, 4, scramble)
 
 
-def to_ship_name(addr, min_bytes):
+def to_ship_name(addr, min_bytes=None, scramble=True):
+	if not min_bytes:
+		# guess by size
+		if addr < 0x100:
+			min_bytes = 1
+
+		elif addr < 0x10000:
+			min_bytes = 2
+
+		else:
+			min_bytes = 4
+
+	if min_bytes == 4 and scramble:
+		addr = feen(addr)
+
 	name = ""
 	for i in xrange(0, min_bytes):
 		byte = addr % 256
@@ -265,7 +279,7 @@ def find_planet_with_prefix(galaxy, prefix):
 		if (unscrambled & 0xff) == galaxy:
 			star = unscrambled & 0xffff
 			star_name = to_star_name(star)
-			planet = to_planet_name(current)
+			planet = to_planet_name(unscrambled)
 			print("0x%04x %s: %s" % (star, star_name, planet))
 
 
@@ -277,7 +291,7 @@ def find_planet_with_suffix(galaxy, suffix):
 		if (unscrambled & 0xff) == galaxy:
 			star = unscrambled & 0xffff
 			star_name = to_star_name(star)
-			planet = to_planet_name(current)
+			planet = to_planet_name(unscrambled)
 			print("0x%04x %s: %s" % (star, star_name, planet))
 
 
@@ -288,10 +302,57 @@ def find_planet_with_double(galaxy):
 		if (unscrambled & 0xff) == galaxy:
 			star = unscrambled & 0xffff
 			star_name = to_star_name(star)
-			planet = to_planet_name(current)
+			planet = to_planet_name(unscrambled)
 			print("0x%04x %s: %s" % (star, star_name, planet))
 
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
+	subparsers = parser.add_subparsers(dest='command')
+
+	scramble = subparsers.add_parser('scramble', help='scramble an address')
+	scramble.add_argument('address', help='address to scramble')
+
+	unscramble = subparsers.add_parser('unscramble', help='unscramble an address')
+	unscramble.add_argument('address', help='address to unscramble')
+
+	address_from_name = subparsers.add_parser('address', help='get address for name')
+	address_from_name.add_argument('name', help='name to lookup address of')
+
+	name_from_address = subparsers.add_parser('name', help='get name for address')
+	name_from_address.add_argument('address', help='address to lookup name of')
+
+	find_planet = subparsers.add_parser('planet', help='find planet by partial name')
+	find_planet.add_argument('-g', '--galaxy', default='0x0', help='galaxy to search in')
+	find_planet.add_argument('--type', choices=['prefix', 'suffix', 'both'], help='search type')
+	find_planet.add_argument('name', help='name to search for')
+
 	args = parser.parse_args()
+
+	if args.command == 'scramble':
+		address = int(args.address, 16)
+		print("0x%x" % feen(address))
+
+	if args.command == 'unscramble':
+		address = int(args.address, 16)
+		print("0x%x" % fend(address))
+
+	elif args.command == 'address':
+		print("0x%x" % from_ship_name(args.name))
+
+	elif args.command == 'name':
+		address = int(args.address, 16)
+		print(to_ship_name(address))
+
+	elif args.command == 'planet':
+		galaxy = int(args.galaxy, 16)
+		search_type = args.type
+
+		if search_type == 'prefix':
+			find_planet_with_prefix(galaxy, args.name)
+
+		elif search_type == 'suffix':
+			find_planet_with_suffix(galaxy, args.name)
+
+		elif search_type == 'both':
+			find_planet_with_double(galaxy)

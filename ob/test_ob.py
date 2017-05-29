@@ -33,12 +33,15 @@ class MyTest(unittest.TestCase):
 
     def test_to_galaxy_name(self):
         self.assertEquals(ob.to_galaxy_name(0), "zod")
+        self.assertEquals(ob.to_ship_name(0), "zod")
 
     def test_to_star_name(self):
         self.assertEquals(ob.to_star_name(0x100), "marzod")
+        self.assertEquals(ob.to_ship_name(0x100), "marzod")
 
     def test_to_planet_name(self):
-        self.assertEquals(ob.to_planet_name(0x10100), "doznec-marzod")
+        self.assertEquals(ob.to_planet_name(0x10100), "wicdev-wisryt")
+        self.assertEquals(ob.to_ship_name(0x10100, scramble=False), "doznec-marzod")
 
     def test_from_ship_name(self):
         self.assertEquals(ob.from_ship_name('mar'), 1)
