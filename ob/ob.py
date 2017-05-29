@@ -262,13 +262,13 @@ def print_addr(addr):
 	print("0x%08x 0x%08x %s" % (addr, scrambled, name))
 
 
-def print_nth_planet(star, n):
+def print_nth_planet_of_star(star, n):
 	print_addr(nth_planet_of_star(star, n))
 
 
 def print_all_star_planets(star):
 	for i in xrange(1, 65536):
-		print_nth_planet_of_star(star)
+		print_nth_planet_of_star(star, i)
 
 
 def find_planet_with_prefix(galaxy, prefix):
@@ -324,7 +324,7 @@ if __name__ == '__main__':
 
 	find_planet = subparsers.add_parser('planet', help='find planet by partial name')
 	find_planet.add_argument('-g', '--galaxy', default='0x0', help='galaxy to search in')
-	find_planet.add_argument('--type', choices=['prefix', 'suffix', 'both'], help='search type')
+	find_planet.add_argument('--type', choices=['prefix', 'suffix', 'both', 'star'], help='search type')
 	find_planet.add_argument('name', help='name to search for')
 
 	args = parser.parse_args()
@@ -356,3 +356,7 @@ if __name__ == '__main__':
 
 		elif search_type == 'both':
 			find_planet_with_double(galaxy)
+
+		elif search_type == 'star':
+			star = from_ship_name(args.name, 2)
+			print_all_star_planets(star)
