@@ -257,7 +257,7 @@ def nth_planet_of_star(star, n):
 
 def print_addr(addr):
 	scrambled = feen(addr)
-	name = to_planet_name(scrambled)
+	name = to_planet_name(scrambled, scramble=False)
 
 	print("0x%08x 0x%08x %s" % (addr, scrambled, name))
 
