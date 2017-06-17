@@ -1,5 +1,5 @@
 test:
-	python -m unittest discover
+	python2 -m unittest discover
 
 .PHONY: test
 
