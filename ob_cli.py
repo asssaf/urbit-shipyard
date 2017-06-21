@@ -12,13 +12,9 @@ def print_addr(addr):
 	print("0x%08x 0x%08x %s" % (addr, scrambled, name))
 
 
-def print_nth_planet_of_star(star, n):
-	print_addr(ob.nth_planet_of_star(star, n))
-
-
 def print_all_star_planets(star):
-	for i in xrange(1, 65536):
-		print_nth_planet_of_star(star, i)
+	for planet in ob.generate_planets(star):
+		print_addr(planet)
 
 
 def find_planet_with_prefix(galaxy, prefix):

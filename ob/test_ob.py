@@ -60,3 +60,12 @@ class MyTest(unittest.TestCase):
         self.assertEquals(ob.from_ship_name('marzod'), 0x100)
         self.assertEquals(ob.from_ship_name('doznec-marzod', unscramble=False), 0x10100)
         self.assertEquals(ob.from_ship_name('wicdev-wisryt'), 0x10100)
+
+    def test_generate_planets(self):
+        planets = ob.generate_planets(0x100)
+        self.assertEquals(planets.next(), 0x10100)
+        self.assertEquals(planets.next(), 0x20100)
+
+        planets = ob.generate_planets(0x4141)
+        self.assertEquals(planets.next(), 0x14141)
+        self.assertEquals(planets.next(), 0x24141)
