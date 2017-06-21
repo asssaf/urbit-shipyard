@@ -31,6 +31,18 @@ class MyTest(unittest.TestCase):
         self.assertEquals(ob.get_prefix(1), "mar")
         self.assertEquals(ob.get_suffix(1), "nec")
 
+    def test_is_prefix_syllable(self):
+        self.assertTrue(ob.is_prefix_syllable("mar"))
+        self.assertFalse(ob.is_prefix_syllable(""))
+        self.assertFalse(ob.is_prefix_syllable("mra"))
+        self.assertFalse(ob.is_prefix_syllable("zod"))
+
+    def test_is_suffix_syllable(self):
+        self.assertFalse(ob.is_suffix_syllable("mar"))
+        self.assertFalse(ob.is_suffix_syllable(""))
+        self.assertFalse(ob.is_suffix_syllable("mra"))
+        self.assertTrue(ob.is_suffix_syllable("zod"))
+
     def test_to_galaxy_name(self):
         self.assertEquals(ob.to_galaxy_name(0), "zod")
         self.assertEquals(ob.to_ship_name(0), "zod")

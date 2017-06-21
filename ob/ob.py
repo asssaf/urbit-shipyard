@@ -252,3 +252,18 @@ def from_ship_name(name, unscramble=True):
 
 def nth_planet_of_star(star, n):
 	return n * 65536 + star
+
+
+def is_syllable(set, syllable):
+	if not syllable or len(syllable) != 3:
+		return False
+
+	return set.find(syllable) % 3 == 0
+
+
+def is_prefix_syllable(syllable):
+	return is_syllable(prefix, syllable)
+
+
+def is_suffix_syllable(syllable):
+	return is_syllable(suffix, syllable)
