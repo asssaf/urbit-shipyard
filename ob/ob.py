@@ -250,10 +250,6 @@ def from_ship_name(name, unscramble=True):
 		return addr
 
 
-def nth_planet_of_star(star, n):
-	return n * 65536 + star
-
-
 def is_syllable(set, syllable):
 	if not syllable or len(syllable) != 3:
 		return False
@@ -267,10 +263,3 @@ def is_prefix_syllable(syllable):
 
 def is_suffix_syllable(syllable):
 	return is_syllable(suffix, syllable)
-
-
-def generate_planets(star):
-	planet_index = 1
-	while planet_index < 65536:
-		yield nth_planet_of_star(star, planet_index)
-		planet_index += 1

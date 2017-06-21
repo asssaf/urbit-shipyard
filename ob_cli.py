@@ -2,7 +2,7 @@
 
 import argparse
 
-from ob import ob
+from ob import ob, ob_util
 
 
 def print_addr(addr):
@@ -13,7 +13,7 @@ def print_addr(addr):
 
 
 def print_all_star_planets(star):
-	for planet in ob.generate_planets(star):
+	for planet in ob_util.generate_planets(star):
 		print_addr(planet)
 
 
