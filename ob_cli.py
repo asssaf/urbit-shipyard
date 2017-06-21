@@ -13,7 +13,7 @@ def print_addr(addr):
 
 
 def print_nth_planet_of_star(star, n):
-	print_addr(nth_planet_of_star(star, n))
+	print_addr(ob.nth_planet_of_star(star, n))
 
 
 def print_all_star_planets(star):
@@ -108,5 +108,5 @@ if __name__ == '__main__':
 			find_planet_with_double(galaxy)
 
 		elif search_type == 'star':
-			star = from_ship_name(args.name, 2)
+			star = ob.from_ship_name(args.name, 2)
 			print_all_star_planets(star)
