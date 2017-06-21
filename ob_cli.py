@@ -3,7 +3,7 @@
 import argparse
 
 from ob import ob, ob_util
-
+from itertools import ifilter
 
 def print_addr(addr):
 	scrambled = ob.feen(addr)
@@ -17,39 +17,48 @@ def print_all_star_planets(star):
 		print_addr(planet)
 
 
+def print_star_and_planet(planet):
+	star = planet & 0xffff
+	star_name = ob.to_star_name(star)
+	planet_name = ob.to_planet_name(planet)
+	print("0x%04x %s: %s" % (star, star_name, planet_name))
+
+
 def find_planet_with_prefix(galaxy, prefix):
-	addr = ob.from_ship_name(prefix) * 65536
-	for i in xrange(1, 65536):
-		current = addr + i
-		unscrambled = ob.fend(current)
-		if (unscrambled & 0xff) == galaxy:
-			star = unscrambled & 0xffff
-			star_name = ob.to_star_name(star)
-			planet = ob.to_planet_name(unscrambled)
-			print("0x%04x %s: %s" % (star, star_name, planet))
+	addr = ob.from_ship_name(prefix) * 0x10000
+
+	planet_range = (addr + i for i in xrange(0x1, 0x10000))
+	planets = find_planet(planet_range, galaxy)
+
+	for planet in planets:
+		print_star_and_planet(planet)
 
 
 def find_planet_with_suffix(galaxy, suffix):
 	addr = ob.from_ship_name(suffix)
-	for i in xrange(1, 65536):
-		current = addr + (i * 65536)
-		unscrambled = ob.fend(current)
-		if (unscrambled & 0xff) == galaxy:
-			star = unscrambled & 0xffff
-			star_name = ob.to_star_name(star)
-			planet = ob.to_planet_name(unscrambled)
-			print("0x%04x %s: %s" % (star, star_name, planet))
+
+	planet_range = (addr + i*0x10000 for i in xrange(0x1, 0x10000))
+	planets = find_planet(planet_range, galaxy)
+
+	for planet in planets:
+		print_star_and_planet(planet)
 
 
 def find_planet_with_double(galaxy):
-	for i in xrange(1, 65536):
-		current = i + (i * 65536)
-		unscrambled = ob.fend(current)
-		if (unscrambled & 0xff) == galaxy:
-			star = unscrambled & 0xffff
-			star_name = ob.to_star_name(star)
-			planet = ob.to_planet_name(unscrambled)
-			print("0x%04x %s: %s" % (star, star_name, planet))
+	# increment both low word and high word so by 0x10001
+	planet_range = (i*0x10001 for i in xrange(0x1, 0x10000))
+	planets = find_planet(planet_range, galaxy)
+
+	for planet in planets:
+		print_star_and_planet(planet)
+
+
+def find_planet(addr_range, galaxy):
+	galaxy_pred = lambda x: x & 0xff == galaxy
+	planets = (ob.fend(i) for i in addr_range)
+	planets = ifilter(galaxy_pred, planets)
+
+	return planets
 
 
 if __name__ == '__main__':
@@ -68,10 +77,10 @@ if __name__ == '__main__':
 	name_from_address = subparsers.add_parser('name', help='get name for address')
 	name_from_address.add_argument('address', help='address to lookup name of')
 
-	find_planet = subparsers.add_parser('planet', help='find planet by partial name')
-	find_planet.add_argument('-g', '--galaxy', default='0x0', help='galaxy to search in')
-	find_planet.add_argument('--type', choices=['prefix', 'suffix', 'both', 'star'], help='search type')
-	find_planet.add_argument('name', help='name to search for')
+	planet_parser = subparsers.add_parser('planet', help='find planet by partial name')
+	planet_parser.add_argument('-g', '--galaxy', default='0x0', help='galaxy to search in')
+	planet_parser.add_argument('--type', choices=['prefix', 'suffix', 'both', 'star'], help='search type')
+	planet_parser.add_argument('name', help='name to search for')
 
 	args = parser.parse_args()
 
