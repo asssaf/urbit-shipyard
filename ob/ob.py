@@ -40,99 +40,99 @@ remlysfynwerrycsugnysnyllyndyndemluxfedsedbecmun\
 lyrtesmudnytbyrsenwegfyrmurtelreptegpecnelnevfes"""
 
 def get_syllable(s, i):
-	return s[i*3:(i+1)*3]
+    return s[i*3:(i+1)*3]
 
 def get_prefix(i):
-	return get_syllable(prefix, i)
+    return get_syllable(prefix, i)
 
 def get_suffix(i):
-	return get_syllable(suffix, i)
+    return get_syllable(suffix, i)
 
 
 def feen(pyn):
-	if pyn >= 0x10000 and pyn <= 0xffffffff:
-		return 0x10000 + fice(pyn - 0x10000)
+    if pyn >= 0x10000 and pyn <= 0xffffffff:
+        return 0x10000 + fice(pyn - 0x10000)
 
-	if pyn >= 0x100000000 and pyn <= 0xffffffffffffffff:
-		lo = pyn & 0xffffffff
-		hi = pyn & 0xffffffff00000000
-		return (hi | feen(lo))
+    if pyn >= 0x100000000 and pyn <= 0xffffffffffffffff:
+        lo = pyn & 0xffffffff
+        hi = pyn & 0xffffffff00000000
+        return (hi | feen(lo))
 
-	return pyn
+    return pyn
 
 
 def fend(cry):
-	if cry >= 0x10000 and cry < 0xffffffff:
-		return 0x10000 + teil(cry - 0x10000)
+    if cry >= 0x10000 and cry < 0xffffffff:
+        return 0x10000 + teil(cry - 0x10000)
 
-	if cry >= 0x100000000 and cry <= 0xffffffffffffffff:
-		lo = cry & 0xffffffff
-		hi = cry & 0xffffffff00000000
-		return (hi | fend(lo))
+    if cry >= 0x100000000 and cry <= 0xffffffffffffffff:
+        lo = cry & 0xffffffff
+        hi = cry & 0xffffffff00000000
+        return (hi | fend(lo))
 
-	return cry
+    return cry
 
 
 def fice(nor):
-	sel = [ nor % 65535, nor / 65535 ]
-	for i in xrange(0, 4):
-		sel = rynd(i, sel[0], sel[1])
+    sel = [ nor % 65535, nor / 65535 ]
+    for i in xrange(0, 4):
+        sel = rynd(i, sel[0], sel[1])
 
-	res = 65535*sel[0] + sel[1]
+    res = 65535*sel[0] + sel[1]
 
-	logging.debug("fice(%x)=%x" % (nor, res))
-	return res
+    logging.debug("fice(%x)=%x" % (nor, res))
+    return res
 
 
 def teil(vip):
-	sel = [ vip % 65535, vip / 65535 ]
-	for i in xrange(3, -1, -1):
-		sel = rund(i, sel[0], sel[1])
+    sel = [ vip % 65535, vip / 65535 ]
+    for i in xrange(3, -1, -1):
+        sel = rund(i, sel[0], sel[1])
 
-	res = 65535*sel[0] + sel[1]
+    res = 65535*sel[0] + sel[1]
 
-	logging.debug("teil(%x)=%x" % (vip, res))
-	return res
+    logging.debug("teil(%x)=%x" % (vip, res))
+    return res
 
 
 def rynd(n, l, r):
-	res = [0, 0]
-	res[0] = r
+    res = [0, 0]
+    res[0] = r
 
-	if (n % 2) == 0:
-		m = 65535
-	else:
-		m = 65536
+    if (n % 2) == 0:
+        m = 65535
+    else:
+        m = 65536
 
-	res[1] = (l + muk(raku[n], 2, r)) % m
+    res[1] = (l + muk(raku[n], 2, r)) % m
 
-	logging.debug("rynd(%d, %x, %x)=[%x, %x]" % (n, l, r, res[0], res[1]))
-	return res
+    logging.debug("rynd(%d, %x, %x)=[%x, %x]" % (n, l, r, res[0], res[1]))
+    return res
 
 
 def rund(n, l, r):
-	res = [0, 0]
-	res[0] = r
+    res = [0, 0]
+    res[0] = r
 
-	if (n % 2) == 0:
-		m = 65535
-	else:
-		m = 65536
+    if (n % 2) == 0:
+        m = 65535
+    else:
+        m = 65536
 
-	h = muk(raku[n], 2, r)
-	res[1] = (m + l - (h%m)) % m
+    h = muk(raku[n], 2, r)
+    res[1] = (m + l - (h%m)) % m
 
-	logging.debug("rund(%d, %x, %x)=[%x, %x]" % (n, l, r, res[0], res[1]))
-	return res
+    logging.debug("rund(%d, %x, %x)=[%x, %x]" % (n, l, r, res[0], res[1]))
+    return res
 
 
 def muk(syd, len, key):
-	lo = key & 0xff
-	hi = (key & 0xff00) / 256
-	res = murmur3_x86_32(chr(lo) + chr(hi), seed=syd)
-	logging.debug("muk(%x, %s, %x)=%x" % (syd, len, key, res))
+    lo = key & 0xff
+    hi = (key & 0xff00) / 256
+    res = murmur3_x86_32(chr(lo) + chr(hi), seed=syd)
+    logging.debug("muk(%x, %s, %x)=%x" % (syd, len, key, res))
 
-	return res
+    return res
 
 
 def murmur3_x86_32(data, seed = 0):
@@ -185,81 +185,81 @@ def murmur3_x86_32(data, seed = 0):
 
 
 def to_galaxy_name(galaxy):
-	return to_ship_name(galaxy, 1)
+    return to_ship_name(galaxy, 1)
 
 
 def to_star_name(star):
-	return to_ship_name(star, 2)
+    return to_ship_name(star, 2)
 
 
 def to_planet_name(scrambled, scramble=True):
-	name = ""
-	s = scrambled
-	return to_ship_name(s, 4, scramble)
+    name = ""
+    s = scrambled
+    return to_ship_name(s, 4, scramble)
 
 
 def to_ship_name(addr, min_bytes=None, scramble=True):
-	if not min_bytes:
-		# guess by size
-		if addr < 0x100:
-			min_bytes = 1
+    if not min_bytes:
+        # guess by size
+        if addr < 0x100:
+            min_bytes = 1
 
-		elif addr < 0x10000:
-			min_bytes = 2
+        elif addr < 0x10000:
+            min_bytes = 2
 
-		else:
-			min_bytes = 4
+        else:
+            min_bytes = 4
 
-	if min_bytes == 4 and scramble:
-		addr = feen(addr)
+    if min_bytes == 4 and scramble:
+        addr = feen(addr)
 
-	name = ""
-	for i in xrange(0, min_bytes):
-		byte = addr % 256
-		if i % 2 == 1:
-			syllable = get_prefix(byte)
-		else:
-			syllable = get_suffix(byte)
+    name = ""
+    for i in xrange(0, min_bytes):
+        byte = addr % 256
+        if i % 2 == 1:
+            syllable = get_prefix(byte)
+        else:
+            syllable = get_suffix(byte)
 
-		if (i == 2):
-			name = "-" + name
+        if (i == 2):
+            name = "-" + name
 
-		name = syllable + name
-		addr = addr / 256
+        name = syllable + name
+        addr = addr / 256
 
-	return name
+    return name
 
 
 def from_ship_name(name, unscramble=True):
-	if len(name) == 3:
-		return prefix.index(name) / 3
+    if len(name) == 3:
+        return prefix.index(name) / 3
 
-	elif len(name) == 6:
-		addr = prefix.index(name[:3]) / 3
-		addr *= 256
-		addr += suffix.index(name[3:]) / 3
-		return addr
+    elif len(name) == 6:
+        addr = prefix.index(name[:3]) / 3
+        addr *= 256
+        addr += suffix.index(name[3:]) / 3
+        return addr
 
-	else:
-		addr = from_ship_name(name[:6])
-		addr *= 65536
-		addr += from_ship_name(name[7:])
-		if unscramble:
-			addr = fend(addr)
+    else:
+        addr = from_ship_name(name[:6])
+        addr *= 65536
+        addr += from_ship_name(name[7:])
+        if unscramble:
+            addr = fend(addr)
 
-		return addr
+        return addr
 
 
 def is_syllable(set, syllable):
-	if not syllable or len(syllable) != 3:
-		return False
+    if not syllable or len(syllable) != 3:
+        return False
 
-	return set.find(syllable) % 3 == 0
+    return set.find(syllable) % 3 == 0
 
 
 def is_prefix_syllable(syllable):
-	return is_syllable(prefix, syllable)
+    return is_syllable(prefix, syllable)
 
 
 def is_suffix_syllable(syllable):
-	return is_syllable(suffix, syllable)
+    return is_syllable(suffix, syllable)
