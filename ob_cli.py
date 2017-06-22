@@ -24,6 +24,11 @@ def print_star_and_planet(planet):
     print("0x%04x %s: %s" % (star, star_name, planet_name))
 
 
+def find_planet_with_prefixes(galaxy, words):
+    for prefix in words:
+        find_planet_with_prefix(galaxy, prefix)
+
+
 def find_planet_with_prefix(galaxy, prefix):
     addr = ob.from_ship_name(prefix) * 0x10000
 
@@ -32,6 +37,11 @@ def find_planet_with_prefix(galaxy, prefix):
 
     for planet in planets:
         print_star_and_planet(planet)
+
+
+def find_planet_with_suffixes(galaxy, words):
+    for suffix in words:
+        find_planet_with_suffix(galaxy, suffix)
 
 
 def find_planet_with_suffix(galaxy, suffix):
@@ -88,7 +98,7 @@ if __name__ == '__main__':
     planet_parser = subparsers.add_parser('planet', help='find planet by partial name')
     planet_parser.add_argument('-g', '--galaxy', default='0x0', help='galaxy to search in')
     planet_parser.add_argument('--type', choices=['prefix', 'suffix', 'both', 'star'], help='search type')
-    planet_parser.add_argument('name', help='name to search for')
+    planet_parser.add_argument('name', help='name to search for', nargs='+')
 
     args = parser.parse_args()
 
@@ -115,10 +125,10 @@ if __name__ == '__main__':
         search_type = args.type
 
         if search_type == 'prefix':
-            find_planet_with_prefix(galaxy, args.name)
+            find_planet_with_prefixes(galaxy, args.name)
 
         elif search_type == 'suffix':
-            find_planet_with_suffix(galaxy, args.name)
+            find_planet_with_suffixes(galaxy, args.name)
 
         elif search_type == 'both':
             find_planet_with_double(galaxy)
