@@ -45,3 +45,34 @@ class ObUtilTest(unittest.TestCase):
         results = ob_util.find_suffix_syllable('*yn')
         self.assertEquals(results.next(), 'byn')
         self.assertEquals(results.next(), 'syn')
+
+    def test_find_words_by_prefix(self):
+        results = list(ob_util.find_words('doz', '*'))
+        self.assertEquals(len(results), 256)
+        self.assertEquals(results[0], 'dozzod')
+
+        results = list(ob_util.find_words('do*', '*'))
+        self.assertEquals(len(results), 9*256)
+
+        results = list(ob_util.find_words('d*', '*'))
+        self.assertEquals(len(results), 26*256)
+
+        results = list(ob_util.find_words('doz', 'n*'))
+        self.assertEquals(len(results), 25)
+
+        results = list(ob_util.find_words('doz', 'ne*'))
+        self.assertEquals(len(results), 11)
+
+    def test_find_words_by_suffix(self):
+        results = list(ob_util.find_words('*', 'zod'))
+        self.assertEquals(len(results), 256)
+        self.assertEquals(results[0], 'dozzod')
+
+        results = list(ob_util.find_words('*', 'fy*'))
+        self.assertEquals(len(results), 3*256)
+
+        results = list(ob_util.find_words('*', 'f*'))
+        self.assertEquals(len(results), 16*256)
+
+        results = list(ob_util.find_words('*', '*'))
+        self.assertEquals(len(results), 256*256)

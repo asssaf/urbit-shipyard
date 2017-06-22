@@ -61,19 +61,9 @@ def find_planet(addr_range, galaxy):
 	return planets
 
 
-def find_words(pattern):
-	if pattern.startswith('*'):
-		syllable = pattern[1:]
-		if ob.is_suffix_syllable(syllable):
-			for prefix in xrange(0, 0x100):
-				print(ob.get_prefix(prefix) + syllable)
-
-	elif pattern.endswith('*'):
-		syllable = pattern[:-1]
-		if ob.is_prefix_syllable(syllable):
-			for suffix in xrange(0, 0x100):
-				print(syllable + ob.get_suffix(suffix))
-
+def find_words(prefix, suffix):
+	for word in ob_util.find_words(prefix, suffix):
+		print(word)
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
@@ -92,7 +82,8 @@ if __name__ == '__main__':
 	name_from_address.add_argument('address', help='address to lookup name of')
 
 	word_parser = subparsers.add_parser('word', help='find words based on glob pattern')
-	word_parser.add_argument('pattern', help='pattern such as *zod or bin*')
+	word_parser.add_argument('--prefix', help='pattern for prefix such as *od or z*', default='*')
+	word_parser.add_argument('--suffix', help='pattern for suffix such as bi* or *n', default='*')
 
 	planet_parser = subparsers.add_parser('planet', help='find planet by partial name')
 	planet_parser.add_argument('-g', '--galaxy', default='0x0', help='galaxy to search in')
@@ -117,7 +108,7 @@ if __name__ == '__main__':
 		print(ob.to_ship_name(address))
 
 	elif args.command == 'word':
-		find_words(args.pattern)
+		find_words(args.prefix, args.suffix)
 
 	elif args.command == 'planet':
 		galaxy = int(args.galaxy, 16)
