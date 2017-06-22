@@ -3,7 +3,7 @@
 import argparse
 
 from ob import ob, ob_util
-from itertools import ifilter
+from itertools import ifilter, combinations_with_replacement
 
 def print_addr(addr):
     scrambled = ob.feen(addr)
@@ -63,6 +63,16 @@ def find_planet_with_double(galaxy):
         print_star_and_planet(planet)
 
 
+def find_planet_with_both(galaxy, words):
+    # generate all word combinations from the word list
+    combinations = combinations_with_replacement(words, 2)
+    for c in combinations:
+        name = "%s-%s" % c
+        address = ob.from_ship_name(name)
+        if address & 0xff == galaxy:
+            print_star_and_planet(address)
+
+
 def find_planet(addr_range, galaxy):
     galaxy_pred = lambda x: x & 0xff == galaxy
     planets = (ob.fend(i) for i in addr_range)
@@ -97,7 +107,7 @@ if __name__ == '__main__':
 
     planet_parser = subparsers.add_parser('planet', help='find planet by partial name')
     planet_parser.add_argument('-g', '--galaxy', default='0x0', help='galaxy to search in')
-    planet_parser.add_argument('--type', choices=['prefix', 'suffix', 'both', 'star'], help='search type')
+    planet_parser.add_argument('--type', choices=['prefix', 'suffix', 'both', 'double', 'star'], help='search type')
     planet_parser.add_argument('name', help='name to search for', nargs='+')
 
     args = parser.parse_args()
@@ -131,6 +141,9 @@ if __name__ == '__main__':
             find_planet_with_suffixes(galaxy, args.name)
 
         elif search_type == 'both':
+            find_planet_with_both(galaxy, args.name)
+
+        elif search_type == 'double':
             find_planet_with_double(galaxy)
 
         elif search_type == 'star':
