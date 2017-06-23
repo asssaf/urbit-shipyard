@@ -69,14 +69,16 @@ def find_planet_with_both(galaxy, words):
     for c in combinations:
         name = "%s-%s" % c
         address = ob.from_ship_name(name)
-        if address & 0xff == galaxy:
+        if address & 0xff == galaxy and address & 0xff00 != 0:
             print_star_and_planet(address)
 
 
 def find_planet(addr_range, galaxy):
     galaxy_pred = lambda x: x & 0xff == galaxy
+    star_pred = lambda x: x & 0xff00 != 0
     planets = (ob.fend(i) for i in addr_range)
     planets = ifilter(galaxy_pred, planets)
+    planets = ifilter(star_pred, planets)
 
     return planets
 
