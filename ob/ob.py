@@ -48,6 +48,13 @@ def get_prefix(i):
 def get_suffix(i):
     return get_syllable(suffix, i)
 
+def get_syllable_index(set, syllable):
+    i = set.find(syllable)
+    if i == -1:
+        raise Exception("Invalid syllable: %s" % syllable)
+
+    return i / 3
+
 
 def feen(pyn):
     if pyn >= 0x10000 and pyn <= 0xffffffff:
@@ -232,12 +239,12 @@ def to_ship_name(addr, min_bytes=None, scramble=True):
 
 def from_ship_name(name, unscramble=True):
     if len(name) == 3:
-        return prefix.index(name) / 3
+        return get_syllable_index(prefix, name)
 
     elif len(name) == 6:
-        addr = prefix.index(name[:3]) / 3
+        addr = get_syllable_index(prefix, name[:3])
         addr *= 256
-        addr += suffix.index(name[3:]) / 3
+        addr += get_syllable_index(suffix, name[3:])
         return addr
 
     else:

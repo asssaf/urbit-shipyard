@@ -60,3 +60,21 @@ class ObTest(unittest.TestCase):
         self.assertEquals(ob.from_ship_name('marzod'), 0x100)
         self.assertEquals(ob.from_ship_name('doznec-marzod', unscramble=False), 0x10100)
         self.assertEquals(ob.from_ship_name('wicdev-wisryt'), 0x10100)
+
+    def test_from_ship_name_invalid_syllable(self):
+        with self.assertRaises(Exception) as context:
+            ob.from_ship_name('maz')
+
+        self.assertIn('Invalid syllable: maz', context.exception.message)
+
+    def test_from_ship_name_invalid_prefix_syllable(self):
+        with self.assertRaises(Exception) as context:
+            ob.from_ship_name('mazzod')
+
+        self.assertIn('Invalid syllable: maz', context.exception.message)
+
+    def test_from_ship_name_invalid_suffix_syllable(self):
+        with self.assertRaises(Exception) as context:
+            ob.from_ship_name('marrod')
+
+        self.assertIn('Invalid syllable: rod', context.exception.message)
