@@ -239,7 +239,7 @@ def to_ship_name(addr, min_bytes=None, scramble=True):
 
 def from_ship_name(name, unscramble=True):
     if len(name) == 3:
-        return get_syllable_index(prefix, name)
+        return get_syllable_index(suffix, name)
 
     elif len(name) == 6:
         addr = get_syllable_index(prefix, name[:3])
