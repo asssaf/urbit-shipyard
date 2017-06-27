@@ -69,7 +69,7 @@ def feen(pyn):
 
 
 def fend(cry):
-    if cry >= 0x10000 and cry < 0xffffffff:
+    if cry >= 0x10000 and cry <= 0xffffffff:
         return 0x10000 + teil(cry - 0x10000)
 
     if cry >= 0x100000000 and cry <= 0xffffffffffffffff:
