@@ -1,4 +1,4 @@
-# urbit-dock
+# urbit-shipyard
 Ship name utilities for [Urbit](https://urbit.org)
 
 I'm pretty new to hoon, so for now I've written this in python (maybe I'll rewrite it again in the future to run within urbit).
