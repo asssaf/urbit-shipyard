@@ -169,5 +169,6 @@ if __name__ == '__main__':
             find_planet_with_double(galaxy, star)
 
         elif search_type == 'star':
-            star = ob.from_ship_name(args.name, 2)
-            print_all_star_planets(star)
+            for star in args.name:
+                star = ob.from_ship_name(star, 2)
+                print_all_star_planets(star)

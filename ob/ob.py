@@ -247,7 +247,7 @@ def from_ship_name(name, unscramble=True):
         addr += get_syllable_index(suffix, name[3:])
         return addr
 
-    else:
+    elif len(name) == 13:
         addr = from_ship_name(name[:6])
         addr *= 65536
         addr += from_ship_name(name[7:])
@@ -256,6 +256,8 @@ def from_ship_name(name, unscramble=True):
 
         return addr
 
+    else:
+        raise Exception("Names longer than a planet are not supported: %s" % name)
 
 def is_syllable(set, syllable):
     if not syllable or len(syllable) != 3:
