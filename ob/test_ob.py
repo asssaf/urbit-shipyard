@@ -78,3 +78,8 @@ class ObTest(unittest.TestCase):
             ob.from_ship_name('marrod')
 
         self.assertIn('Invalid syllable: rod', context.exception.message)
+
+    def test_issue_1105(self):
+        self.assertNotEquals(ob.to_ship_name(0xb944e100), ob.to_ship_name(0x1c982701))
+        self.assertEquals(ob.to_ship_name(0xb944e100), "morlyd-mogmev")
+        self.assertEquals(ob.to_ship_name(0x1c982701), "fipfes-morlyd")

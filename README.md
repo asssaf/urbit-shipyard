@@ -10,3 +10,8 @@ Most of arvo's ob rewritten in python, provides function to convert addresses to
 ## Samples
 ### ob_cli.py
 Sample CLI script that utilizes the ob library and allows finding planets by prefix/suffix. Run `ob_cli.py --help` for more info.
+
+## Test
+```
+python -m unittest discover -v
+```

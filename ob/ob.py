@@ -85,7 +85,10 @@ def fice(nor):
     for i in xrange(0, 4):
         sel = rynd(i, sel[0], sel[1])
 
-    res = 65535*sel[0] + sel[1]
+    if sel[1] == 65535:
+        res = 65535*sel[1] + sel[0]
+    else:
+        res = 65535*sel[0] + sel[1]
 
     logging.debug("fice(%x)=%x" % (nor, res))
     return res
@@ -96,7 +99,10 @@ def teil(vip):
     for i in xrange(3, -1, -1):
         sel = rund(i, sel[0], sel[1])
 
-    res = 65535*sel[0] + sel[1]
+    if sel[1] == 65535:
+        res = 65535*sel[1] + sel[0]
+    else:
+        res = 65535*sel[0] + sel[1]
 
     logging.debug("teil(%x)=%x" % (vip, res))
     return res
